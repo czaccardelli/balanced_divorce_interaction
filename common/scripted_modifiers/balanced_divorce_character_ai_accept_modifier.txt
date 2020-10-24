@@ -1,4 +1,4 @@
-﻿ivorce_character_ai_accept_modifier = {
+﻿divorce_character_ai_accept_modifier = {
 	modifier = {
 		add = -50
 		desc = BASE_RELUCTANCE
