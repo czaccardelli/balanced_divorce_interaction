@@ -24,18 +24,12 @@
 		desc = AI_OPINION_REASON
 	}
 
-    modifier = { # very unlikely for Christians who have been faithful that the head of faith has a positive opinion of
+    modifier = { # very unlikely for Christians who have been faithful
 		add = -50
 		desc = DIVORCE_HOLY
         scope:secondary_recipient.faith.religion = religion:christianity_religion
         scope:secondary_recipient = {
             NOT = { exposed_cheating_on_spouse_trigger = { SPOUSE = scope:actor } }
-        }
-        scope:recipient = {
-            opinion = {
-                target = scope:secondary_recipient
-                value > 0
-            }
         }
 	}
 
