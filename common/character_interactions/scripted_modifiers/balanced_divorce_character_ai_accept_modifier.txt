@@ -1,0 +1,198 @@
+﻿ivorce_character_ai_accept_modifier = {
+	modifier = {
+		add = -50
+		desc = BASE_RELUCTANCE
+	}
+	
+	modifier = { # Less likely if it's the recipient him/herself
+		add = -100
+		desc = MY_OWN_MARRIAGE_REASON
+		scope:recipient = scope:secondary_recipient
+	}
+	
+	opinion_modifier = { # More likely if Recipient likes Actor
+		who = scope:recipient
+		opinion_target = scope:actor
+		multiplier = 0.5
+		desc = AI_OPINION_REASON
+	}
+	
+	opinion_modifier = { # Unlikely if Recipient likes Secondary Recipient
+		who = scope:recipient
+		opinion_target = scope:secondary_recipient
+		multiplier = -1
+		desc = AI_OPINION_REASON
+	}
+
+    modifier = { # very unlikely for Christians who have been faithful that the head of faith has a positive opinion of
+		add = -30
+		desc = DIVORCE_HOLY
+        scope:secondary_recipient.faith.religion = religion:christianity_religion
+        scope:secondary_recipient = {
+            NOT = { exposed_cheating_on_spouse_trigger = { SPOUSE = scope:actor } }
+        }
+        scope:recipient = {
+            opinion = {
+                target = scope:secondary_recipient
+                value > 0
+            }
+        }
+	}
+
+	modifier = { # Very unlikely if the marriage is between kin and the religion has Divine Marriages
+		add = -100
+		desc = DIVORCE_HOLY
+		scope:actor = {
+			faith = {
+				has_doctrine = tenet_divine_marriage
+			}
+		}
+		scope:actor = {
+			OR = {
+				is_cousin_of = scope:secondary_recipient
+				is_close_or_extended_family_of = scope:secondary_recipient
+			}
+		}
+	}
+
+	modifier = { # More likely if the spouse has been unfaithful (lover relation or std)
+		desc = DIVORCE_INFIDELITY
+		add = {
+			# Cheating isn't awful
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:secondary_recipient = { is_male = yes }
+						}
+						faith = { has_doctrine = doctrine_adultery_men_accepted }
+					}
+					trigger_else_if = {
+						limit = {
+							scope:secondary_recipient = { is_female = yes }
+						}
+						faith = { has_doctrine = doctrine_adultery_women_accepted }
+					}
+					# making the default behavior explicit if no other trigger_(else_)ifs are valid
+					trigger_else = {
+						always = yes
+					}
+				}
+				value = 20
+			}
+			# Cheating is awful
+			else = {
+				value = 50
+			}
+		}
+		scope:secondary_recipient = {
+			exposed_cheating_on_spouse_trigger = { SPOUSE = scope:actor }
+		}
+	}
+
+	modifier = { # Eunuchs
+		add = 100
+		desc = DIVORCE_IMPOTENT_EUNUCH
+		scope:secondary_recipient = {
+			is_female = no
+			has_trait = eunuch
+		}
+	}
+
+	modifier = { # Very likely if the marriage has turned Polygamous and their faith doesn't support it
+		add = 100
+		desc = DIVORCE_POLYGAMY
+		scope:actor = {
+			any_consort = { 
+				is_alive = yes
+				NOT = { this = scope:secondary_recipient } 
+			}
+			any_consort = { 
+				this = scope:secondary_recipient  
+			}
+		}
+		scope:secondary_recipient.faith = { NOT = {	has_doctrine = doctrine_polygamy }	}
+	}
+	
+	
+	modifier = { # Heathens
+		add = 100
+		desc = DIVORCE_HEATHEN
+		NOT = {
+			scope:secondary_recipient.faith.religion = scope:actor.faith.religion
+		}
+	}
+	
+	modifier = { # Heretic
+		add = 10
+		desc = DIVORCE_HERETIC
+		scope:secondary_recipient.faith.religion = scope:actor.faith.religion
+		scope:secondary_recipient = {
+			NOT = {
+				faith = scope:actor.faith
+			}
+		}
+	}
+
+	modifier = { # I am a Kinslayer
+		add = -50
+		desc = I_AM_A_KINSLAYER
+		scope:actor = {
+			has_trait_rank = {
+				trait = kinslayer
+				rank >= 1
+			}
+		}
+	}
+	
+	modifier = { # They are a Kinslayer
+		add = 50
+		desc = THEY_ARE_A_KINSLAYER
+		scope:secondary_recipient = {
+			has_trait_rank = {
+				trait = kinslayer
+				rank >= 1
+			}
+		}
+	}
+
+	modifier = { # Friend of the Head of Faith
+		add = 50
+		desc = WE_ARE_FRIENDS
+		scope:recipient = {
+			has_relation_friend = scope:actor
+		}
+	}
+	
+	modifier = { # Best Friend of the Head of Faith
+		add = 150
+		desc = WE_ARE_BEST_FRIENDS
+		scope:recipient = {
+			has_relation_best_friend = scope:actor
+		}
+	}
+	
+	modifier = { # Lover of the Head of Faith
+		add = 25
+		desc = WE_ARE_LOVERS
+		scope:recipient = {
+			has_relation_lover = scope:actor
+		}
+	}
+	
+	modifier = { # Rival of the Head of Faith
+		add = -100
+		desc = WE_ARE_RIVALS
+		scope:recipient = {
+			has_relation_rival = scope:actor
+		}
+	}
+	
+	modifier = { # Nemesis of the Head of Faith
+		add = -500
+		desc = WE_ARE_NEMESES
+		scope:recipient = {
+			has_relation_nemesis = scope:actor
+		}
+	}
+}
