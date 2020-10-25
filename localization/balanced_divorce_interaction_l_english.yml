@@ -1,2 +1,2 @@
 ﻿l_english:
- HAS_BEEN_FAITHFUL:0 "[secondary_recipient.GetShortUINameNoTooltip] has been faithful: $VALUE|=+0$"
+ DIVORCE_HAS_BEEN_FAITHFUL:0 "[secondary_recipient.GetShortUINameNoTooltip] has been faithful: $VALUE|=+0$"

@@ -24,9 +24,9 @@
 		desc = AI_OPINION_REASON
 	}
 
-    modifier = { # very unlikely for Christians who have been faithful
+    modifier = { # very unlikely for Christians who have been faithful to their spouse
 		add = -50
-		desc = DIVORCE_HOLY
+		desc = DIVORCE_HAS_BEEN_FAITHFUL
         scope:secondary_recipient.faith.religion = religion:christianity_religion
         scope:secondary_recipient = {
             NOT = { exposed_cheating_on_spouse_trigger = { SPOUSE = scope:actor } }
